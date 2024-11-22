@@ -1,0 +1,58 @@
+select * from Salesman
+
+select * from Orders
+
+DELETE FROM Orders WHERE salesman_id IN (5004,5007)
+
+select * from Salesman s where exists 
+(select 1 from orders o where s.salesman_id = o.salesman_id)
+
+select * from Salesman s where not exists 
+(select 1 from orders o where s.salesman_id = o.salesman_id)
+
+select * from employees
+
+select * from employees where SALARY < (select avg(salary) from employees)
+
+----CORRELATED SUBQUERY
+
+/* LIST ALL EMPLOYEES WHOSE SALARY IS LESS
+THAN THE AVG SALARY IN THAT DEPARTMENT */
+
+select * from employees e1 where SALARY < 
+(select avg(salary) from employees e2
+where e2.DEPARTMENT = e1.DEPARTMENT)
+
+select * from employees e2 
+where e2.DEPARTMENT_ID = 30
+
+select avg(salary) from employees e2 
+where e2.DEPARTMENT_ID = 30
+
+select * from employees e1 where SALARY < 
+(select avg(salary) from employees e2 
+where e2.DEPARTMENT_ID = 30)
+and e1.DEPARTMENT_ID = 30
+
+select * from departments
+
+/* LIST ALL EMPLOYEES WHOSE AVG SALARY IS
+GREATER THAN THE AVG SALARY OF ANY
+OF THE DEPARTMENTS */
+
+select * from employees where SALARY > ANY (
+select avg_salary from (select DEPARTMENT_ID,AVG(SALARY) as avg_salary
+from employees
+group by DEPARTMENT_ID) as temp)
+
+/* LIST ALL EMPLOYEES WHOSE SALARY IS LESS THAN
+THE SALARY OF ALL THE EMPLOYEES WORKING FOR 
+DEPARMENT_ID 30 */
+
+select * from employees e1 where SALARY < 
+ALL (select salary from employees e2 where DEPARTMENT_ID = 30)
+
+select * from employees e1 where SALARY > 
+ALL (select salary from employees e2 where DEPARTMENT_ID = 30)
+
+

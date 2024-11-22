@@ -1,0 +1,49 @@
+select * from Production.Product where ProductID = 322
+
+select * from Production.Product where ProductID >= 900
+
+select * from Production.Product where ProductID <= 300
+
+select * from Production.Product where ProductID >= 350 and ProductID <=400
+
+select * from Production.Product where ProductID between 350 and 400
+
+select * from Production.Product where Color = 'Silver'
+
+select * from Production.Product where Color <> 'Silver'
+
+select * from Production.Product where Color in ('Silver','Black','Red')
+
+select * from Production.Product where Color not in ('Silver','Black','Red')
+
+select * from Production.Product where Color = 'Silver' and StandardCost > 1000.00
+
+select * from Production.Product where Color = 'Silver' or StandardCost > 1000.00
+
+select * from Production.Product where Size is null
+
+select * from Production.Product where Size is not null
+
+select * from Production.Product where SellStartDate = '2008-04-30'
+
+select * from Production.Product where SellStartDate between '2011-04-30' and '2012-05-31'
+
+
+
+1st Question
+1.Color = Black or yellow
+2.Size = S
+3.SellEndDate = Null
+
+select * from Production.Product where Color in ('Black','Yellow') and Size = 'S'
+and SellEndDate is null
+
+2nd Question
+1.ProductID range = 800 to 900
+2.Color = Silver or ListPrice > 100
+
+select * from Production.Product where ProductID between 800 and 900
+and Color = 'Silver' or ListPrice > 100
+
+select * from Production.Product where ProductID between 800 and 900
+and (Color = 'Silver' or ListPrice > 100)

@@ -1,0 +1,58 @@
+CREATE TABLE Course
+(
+CourseID integer PRIMARY KEY,
+CourseName varchar(50),
+StaffName varchar(50)
+)
+
+insert into Course
+values(401,'Computer Science','Radha'),
+(402,'Electronics and Communication','Meera'),
+(403,'Information Technology','Geetha'),
+(404,'Electronics and Instrumentation','Sivakumar')
+
+select * from Course
+
+drop table Students
+
+CREATE TABLE Students
+(
+StudentID integer PRIMARY KEY,
+FirstName varchar(200),
+LastName varchar(200),
+DateOfBirth Date,
+Gender char(1),
+CourseID integer FOREIGN KEY REFERENCES Course(CourseID)
+)
+
+CREATE TABLE Students
+(
+StudentID integer PRIMARY KEY,
+FirstName varchar(200),
+LastName varchar(200),
+DateOfBirth Date,
+Gender char(1),
+CourseID integer,
+CONSTRAINT FK_Students FOREIGN KEY(CourseID) REFERENCES Course(CourseID)
+)
+
+insert into students
+values(1001,'Aishwarya','Jayaram','2005-04-24','F',401)
+
+insert into students
+values(1002,'Anand','Venkat','2005-05-22','M',405)
+
+select * from Students
+
+delete from Course where CourseID = 402
+
+delete from Students where CourseID = 402
+
+Alter table Students
+ADD FOREIGN KEY(CourseID) REFERENCES Course(CourseID)
+
+Alter table Students
+ADD CONSTRAINT FK_Students FOREIGN KEY(CourseID) REFERENCES Course(CourseID)
+
+Alter table Students
+DROP CONSTRAINT FK_Students

@@ -1,0 +1,186 @@
+SELECT * from employees
+
+exec sp_executesql N'select * from employees'
+
+declare @sql NVARCHAR(MAX)
+set @sql = 'select * from employees'
+exec sp_executesql @sql
+
+declare @sql NVARCHAR(MAX)
+declare @dept_id int
+set @dept_id = 90
+set @sql = 'select * from employees where Department_ID = ' + cast(@dept_id as varchar)
+select @sql
+exec sp_executesql @sql
+
+declare @sql NVARCHAR(MAX)
+declare @dept_id NVARCHAR(MAX)
+set @dept_id = '90'
+set @sql = 'select * from employees where Department_ID = ' + @dept_id
+select @sql
+exec sp_executesql @sql
+
+declare @sql NVARCHAR(MAX)
+declare @first_name NVARCHAR(MAX)
+set @first_name = '''Steven'''
+set @sql = 'select * from employees where First_Name = ' + @first_name 
+select @sql
+exec sp_executesql @sql
+
+declare @sql NVARCHAR(MAX)
+declare @dept_id int
+set @dept_id = 90
+declare @columns NVARCHAR(MAX)
+set @columns = 'Employee_ID, First_Name,Last_Name '
+set @sql = 'select ' + @columns + 'from employees where Department_ID = ' + cast(@dept_id as varchar)
+select @sql
+exec sp_executesql @sql
+
+----------------------------------------------------------------------------
+
+CREATE procedure dynamic_Employees(@manager_id int,@dept_id int)
+as
+declare @sql NVARCHAR(MAX)
+declare @columns NVARCHAR(MAX)
+set @columns = 'Employee_ID, First_Name,Last_Name '
+set @sql = 'select ' + @columns + 'from employees '
+
+If @manager_id is not null
+	set @sql = @sql + 'where Manager_ID = ' + cast(@manager_id as varchar)
+else if @dept_id is not null
+	set @sql = @sql + 'where Department_ID = ' + cast(@dept_id as varchar)
+
+exec sp_executesql @sql
+
+
+
+exec dynamic_Employees null, null
+exec dynamic_Employees 103, null
+exec dynamic_Employees 103, 90
+exec dynamic_Employees null, 90
+
+------------------------------------------------------------------------
+
+PIVOT
+
+
+drop table Sales
+
+CREATE TABLE Sales (
+    Product NVARCHAR(50),
+    Region NVARCHAR(50),
+    SalesAmount DECIMAL(10, 2)
+);
+
+
+INSERT INTO Sales VALUES
+('ProductA', 'North', 100.00),
+('ProductA', 'South', 150.00),
+('ProductB', 'North', 200.00),
+('ProductB', 'South', 120.00),
+('ProductA', 'East', 180.00),
+('ProductB', 'East', 220.00),
+('ProductC', 'North', 80.00),
+('ProductC', 'South', 110.00),
+('ProductC', 'East', 90.00),
+('ProductC', 'West', 130.00);
+
+
+select * from Sales
+
+SELECT *
+FROM (
+    SELECT Product, Region, SalesAmount
+    FROM Sales
+) AS SourceTable
+PIVOT (
+    SUM(SalesAmount) FOR Region IN ([North], [South], [East], [West])
+) AS PivotTable;
+
+----------------------------------------------------------------
+
+
+drop table Sales_sub
+
+CREATE TABLE Sales_sub (
+    Product NVARCHAR(50),
+	SubProduct NVARCHAR(50),
+    Region NVARCHAR(50),
+    SalesAmount DECIMAL(10, 2)
+);
+
+
+INSERT INTO Sales_sub VALUES
+('ProductA','Sub1', 'North', 100.00),
+('ProductA','Sub2', 'North', 50.00),
+('ProductA','Sub1', 'South', 150.00),
+('ProductB', 'Sub1','North', 200.00),
+('ProductB', 'Sub1','South', 120.00),
+('ProductB', 'Sub2','South', 40.00),
+('ProductA','Sub1', 'East', 180.00),
+('ProductB','Sub1', 'East', 220.00),
+('ProductC','Sub1', 'North', 80.00),
+('ProductC','Sub1', 'South', 110.00),
+('ProductC','Sub1', 'East', 90.00),
+('ProductC','Sub1', 'West', 130.00);
+
+
+select * from Sales_sub
+
+
+SELECT * FROM
+(
+SELECT PRODUCT,Region,SalesAmount FROM 
+Sales_sub
+) AS SOURCE
+PIVOT (
+SUM(SalesAmount) FOR Region IN ([North], [South], [East], [West])
+) AS PIVOT_TABLE
+
+------------------------------------------------------------------------------------------
+Unpivot
+
+select * into Sales_pivot from (
+SELECT * FROM
+(
+SELECT PRODUCT,Region,SalesAmount FROM 
+Sales
+) AS SOURCE
+PIVOT (
+SUM(SalesAmount) FOR Region IN ([North], [South], [East], [West])
+) AS PIVOT_TABLE)as p
+
+select * from sales_pivot
+
+select * from
+(
+select * from sales_pivot
+) as source
+unpivot (
+SalesAmount for Region in ([North], [South], [East], [West])
+) as unpivot_table
+
+---------------------------------------------------------------------------------------------
+
+Pivot using dynamic sql
+
+
+DECLARE @sql NVARCHAR(MAX)
+DECLARE @columns NVARCHAR(MAX)
+
+
+select @columns = COALESCE(@columns + ' ,','') + Quotename(Region) from (
+select distinct Region from Sales) as regions
+
+--select @columns
+set @sql = '
+SELECT * FROM
+(
+SELECT PRODUCT,Region,SalesAmount FROM 
+Sales
+) AS SOURCE
+PIVOT (
+SUM(SalesAmount) FOR Region IN (' + @columns + ')
+) AS PIVOT_TABLE'
+
+exec sp_executesql @sql

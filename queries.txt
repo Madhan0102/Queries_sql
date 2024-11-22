@@ -1,0 +1,18 @@
+create table students
+(
+StudentID integer,
+FirstName varchar(200),
+LastName varchar(200),
+DateOfBirth Date,
+Gender char(1)
+)
+
+insert into students
+values(1001,'Aishwarya','Jayaram','2005-04-24','F'),
+(1002,'Anand','Venkat','2005-05-22','M'),
+(1003,'Bala','Sundaram','2004-11-02','M'),
+(1004,'Deepa','Mani','2004-12-09','F'),
+(1005,'Deepa','Mahesh','2005-05-29','F'),
+(1006,'Gokul','Ram','2004-11-27','M')
+
+select * from students

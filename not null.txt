@@ -1,0 +1,26 @@
+drop table students
+
+create table students
+(
+StudentID integer primary key,
+FirstName varchar(200) not null,
+LastName varchar(200),
+DateOfBirth Date,
+Gender char(1)
+)
+
+insert into students
+values(1001,NULL,'Jayaram','2005-04-24','F')
+
+insert into students
+values(1001,'Aishwarya',NULL,'2005-04-24','F')
+
+select * from students
+
+Alter table students
+alter column LastName varchar(200) not null
+
+delete from students where LastName is null
+
+insert into students
+values(1001,'Aishwarya','Jayaram','2005-04-24','F')

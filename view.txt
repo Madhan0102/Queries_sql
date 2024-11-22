@@ -1,0 +1,123 @@
+create table employee
+(
+EmployeeID integer PRIMARY KEY,
+FirstName varchar(200),
+LastName varchar(200),
+DateOfBirth Date,
+Gender char(1),
+DepartmentID integer
+)
+
+insert into employee
+values(1001,'Aishwarya','Jayaram','2005-04-24','F',11),
+(1002,'Anand','Venkat','2005-05-22','M',12),
+(1003,'Bala','Sundaram','2004-11-02','M',13),
+(1004,'Deepa','Mani','2004-12-09','F',11),
+(1005,'Deepa','Mahesh','2005-05-29','F',14),
+(1006,'Gokul','Ram','2004-11-27','M',13),
+(1007,'Shreya','Gopi','2005-06-20','F',17),
+(1008,'Abdul','Rahman','2005-07-30','M',18)
+
+select * from department
+
+create table department
+(
+DepartmentID integer,
+DepartmentName varchar(100)
+)
+
+insert into department
+values(11,'Engineering'),
+(12,'Finance'),
+(13,'Sales'),
+(14,'Marketing'),
+(15,'Human Resources'),
+(16,'IT'),
+(17,'Operations'),
+(18,'Admin')
+
+select * from department
+
+select * from employee
+
+create view employee_details as
+select EmployeeID,FirstName,LastName,DepartmentID
+from employee 
+
+select * from employee_details
+
+create view employee_dept_details as
+select e.EmployeeID,e.FirstName,e.LastName,e.DepartmentID,
+d.DepartmentName 
+from employee e
+join department d
+on e.DepartmentID = d.DepartmentID
+
+select * from employee_dept_details
+
+alter view employee_dept_details as
+select e.EmployeeID,e.FirstName,e.LastName,e.DateOfBirth,e.DepartmentID,
+d.DepartmentName 
+from employee e
+left join department d
+on e.DepartmentID = d.DepartmentID
+
+insert into employee_details
+values(1009,'Alice','Robert',15)
+
+select * from employee_details
+
+select * from employee
+
+select * from department
+
+update employee_details
+set lastname = 'Rahmann'
+where employeeid = 1008
+
+insert into employee_dept_details
+values(1010,'Ashwin','Nambi',16,'IT')
+
+select * from employee_dept_details
+
+update employee_dept_details
+set DepartmentName = 'IT'
+where employeeid = 1001
+
+delete from employee_dept_details
+where employeeid = 1001
+
+delete from employee_details
+where employeeid = 1001
+
+alter view employee_dept_details as
+select d.DepartmentName, count(*) as no_of_employees
+from employee e
+join department d
+on e.DepartmentID = d.DepartmentID
+group by d.DepartmentName
+
+update employee_dept_details
+set no_of_employees = 3
+where DepartmentName = 'IT'
+
+alter view employee_dept_details as
+select distinct e.FirstName, d.DepartmentName
+from employee e
+join department d
+on e.DepartmentID = d.DepartmentID
+
+select * from employee_dept_details
+
+update employee_dept_details
+set DepartmentName = 'IT'
+where FirstName = 'Gokul'
+
+drop view employee_dept_details
+
+
+CREATE LOGIN test_login WITH PASSWORD = 'test123';
+
+create user test_user for login test_login
+
+Grant select on employee_details to test_user

@@ -1,0 +1,37 @@
+
+select * from Production.Product where ProductNumber like 'FC%'
+
+select * from Production.Product where Name like '%Cage'
+
+select * from Production.Product where Name like '%Frame%'
+
+select * from Production.Product where ProductNumber like 'FR%R38%2'
+
+select * from Production.Product where ProductNumber like 'FR-R38B-_2'
+
+select * from Production.Product where ProductNumber like '_R%'
+
+select * from Person.Person where FirstName like 'A[ab]%'
+
+select * from Person.Address where AddressLine1 like '[a-z]%'
+
+select * from Person.Address where AddressLine1 like '[0-9]%'
+
+select * from Person.Address where AddressLine1 like '[a-z0-9]%'
+
+select * from Person.Address where AddressLine1 like '[a-z0-9#$]%'
+
+select * from Person.Address where PostalCode like '[0-9][0-9][0-9][0-9][0-9]'
+
+select * from Production.Product where ProductNumber like 'FR-R92%'
+
+select * from Production.Product where ProductNumber like 'FR-R92[^B]%'
+
+select * from Person.Address where AddressLine1 like '[^a-z0-9]%'
+
+select * from Person.Address where AddressLine1 like '%_%'
+
+select * from Person.Address where AddressLine1 like '%[_]%'
+
+
+

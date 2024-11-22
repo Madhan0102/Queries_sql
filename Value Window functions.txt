@@ -1,0 +1,18 @@
+SELECT ProductID,StandardCost,ModifiedDate
+FROM Production.ProductCostHistory
+ORDER BY ProductID,ModifiedDate
+
+SELECT ProductID,StandardCost,ModifiedDate,
+FIRST_VALUE(StandardCost) OVER(PARTITION BY ProductID ORDER BY ModifiedDate) AS Initial_value,
+LAST_VALUE(StandardCost) OVER(PARTITION BY ProductID ORDER BY ModifiedDate
+RANGE BETWEEN UNBOUNDED PRECEDING
+AND UNBOUNDED FOLLOWING) AS Final_value
+FROM Production.ProductCostHistory
+ORDER BY ProductID,ModifiedDate
+
+SELECT ProductID,StandardCost,ModifiedDate,
+LAG(StandardCost,1,0) OVER(PARTITION BY ProductID ORDER BY ModifiedDate) AS Previous_value,
+LEAD(StandardCost) OVER(PARTITION BY ProductID ORDER BY ModifiedDate) AS Next_value
+FROM Production.ProductCostHistory
+ORDER BY ProductID,ModifiedDate
+

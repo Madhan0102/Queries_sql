@@ -1,0 +1,45 @@
+DROP TABLE students
+
+CREATE TABLE students
+(
+StudentID integer PRIMARY KEY,
+FirstName varchar(200) NOT NULL,
+LastName varchar(200) NOT NULL,
+DateOfBirth Date,
+Gender char(1),
+AadharNumber bigint UNIQUE
+)
+
+CREATE TABLE students
+(
+StudentID integer PRIMARY KEY,
+FirstName varchar(200) NOT NULL,
+LastName varchar(200) NOT NULL,
+DateOfBirth Date,
+Gender char(1),
+AadharNumber bigint,
+CONSTRAINT UC_STUDENTS UNIQUE(AadharNumber)
+)
+
+insert into students
+values(1001,'Aishwarya','Jayaram','2005-04-24','F',123456789123)
+
+select * from students
+
+insert into students
+values(1002,'Anand','Venkat','2005-05-22','M',123456789123)
+
+insert into students
+values(1003,'Bala','Sundaram','2004-11-02','M',NULL)
+
+insert into students
+values(1004,'Deepa','Mani','2004-12-09','F',NULL)
+
+ALTER TABLE students
+ADD UNIQUE(AadharNumber)
+
+ALTER TABLE students
+ADD CONSTRAINT UC_STUDENTS UNIQUE(AadharNumber)
+
+ALTER TABLE students
+DROP CONSTRAINT UC_STUDENTS

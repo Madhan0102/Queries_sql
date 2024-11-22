@@ -1,0 +1,28 @@
+create table employee
+(
+EmployeeID integer PRIMARY KEY,
+FirstName varchar(200),
+LastName varchar(200) UNIQUE,
+DateOfBirth Date,
+Gender char(1),
+DepartmentID integer
+)
+
+SELECT * INTO employee_testIndex from employee
+
+
+create index idx_lastname
+on employee_testIndex(LastName)
+
+create index idx_firstname
+on employee_testIndex(FirstName)
+
+
+ALTER TABLE employee_testIndex
+ADD CONSTRAINT PK_EmployeeID PRIMARY KEY(EmployeeID)
+
+DROP INDEX employee_testIndex.idx_firstname
+
+create index idx_firstname
+on employee_testIndex(FirstName,LastName)
+

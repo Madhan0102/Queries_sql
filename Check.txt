@@ -1,0 +1,40 @@
+drop table employee
+
+create table employee
+(
+EmployeeID integer PRIMARY KEY,
+FirstName varchar(200),
+LastName varchar(200),
+DateOfBirth Date,
+Gender char(1),
+Salary int CHECK (Salary >= 5000)
+)
+
+create table employee
+(
+EmployeeID integer PRIMARY KEY,
+FirstName varchar(200),
+LastName varchar(200),
+DateOfBirth Date,
+Gender char(1),
+Salary int, 
+CONSTRAINT CHK_EMPLOYEE CHECK (Salary >= 5000 AND DateofBirth >= '1980-01-01')
+)
+
+insert into employee
+values(1001,'Aishwarya','Jayaram','2005-04-24','F',4999)
+
+insert into employee
+values(1001,'Aishwarya','Jayaram','2005-04-24','F',5500)
+
+insert into employee
+values(1002,'Anand','Venkat','1975-05-22','M',6000)
+
+Alter table employee
+ADD Check (Salary >= 5000)
+
+Alter table employee
+ADD CONSTRAINT CHK_employee CHECK (Salary >= 5000 AND DateofBirth >= '1980-01-01')
+
+Alter table employee
+DROP CONSTRAINT CHK_employee
